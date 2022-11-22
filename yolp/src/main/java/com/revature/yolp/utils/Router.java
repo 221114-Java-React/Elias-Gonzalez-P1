@@ -16,7 +16,7 @@ public class Router {
             //handler groups
             path("/users", ()->{
                 post(c-> userHandler.signup(c));
-
+                
             });
         });
     }
