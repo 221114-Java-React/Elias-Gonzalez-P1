@@ -8,7 +8,7 @@ public class ReimbursementTypeDAO implements CrudDAO<ReimbursementType> {
 
     @Override
     public void save(ReimbursementType obj) {
-        
+
     }
 
     @Override
