@@ -1,0 +1,1 @@
+- services validate and retrieve data from DAO (data access objects)
