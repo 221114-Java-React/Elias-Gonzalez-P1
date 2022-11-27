@@ -14,6 +14,7 @@ public class UserDAO implements CrudDAO<User>{
     @Override
     public void save(User obj) {
         try(Connection con = ConnectionFactory.getInstance().getConnection()){
+            /*JDBC requires prepared statement, if you need to request from database ALWAYS START WITH PREPARED STATEMENT*/
             PreparedStatement ps = con.prepareStatement("INSERT INTO, ers_users (user_id, username, email, password, given_name, surname, is_active, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?) )");
             ps.setString(1, obj.getUser_id());
             ps.setString(2, obj.getUsername());
