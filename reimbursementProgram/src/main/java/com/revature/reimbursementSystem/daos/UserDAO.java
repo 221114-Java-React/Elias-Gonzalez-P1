@@ -5,7 +5,9 @@ import com.revature.reimbursementSystem.utils.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /*Purpose of a DAO is to return data from the database
@@ -47,5 +49,38 @@ public class UserDAO implements CrudDAO<User>{
     @Override
     public List<User> findAll() {
         return null;
+    }
+    /*custom methods*/
+    public List<String> findAllUsernames() {
+        List<String> usernames = new ArrayList<String>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT (username) FROM ers_users");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String currentUsername = rs.getString("username");
+                usernames.add(currentUsername);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return usernames;
+    }
+    public List<String> findAllEmails() {
+        List<String> emails = new ArrayList<String>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT (email) FROM ers_users");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String currentEmail = rs.getString("email");
+                emails.add(currentEmail);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return emails;
     }
 }
