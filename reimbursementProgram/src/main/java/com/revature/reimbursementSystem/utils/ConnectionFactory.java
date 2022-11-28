@@ -46,6 +46,12 @@ public class ConnectionFactory {
     public Connection getConnection() throws SQLException {
         Connection con = DriverManager.getConnection(props.getProperty("url"),props.getProperty("username"),props.getProperty("password"));
         if (con == null) throw new RuntimeException("Could not establish DB connection");
-        else return con;
+
+        else{
+            System.out.println(con.toString());
+            return con;
+        }
+
+
     }
 }
