@@ -17,14 +17,15 @@ public class UserDAO implements CrudDAO<User>{
     public void save(User obj) {
         try(Connection con = ConnectionFactory.getInstance().getConnection()){
             /*JDBC requires prepared statement, if you need to request from database ALWAYS START WITH PREPARED STATEMENT*/
-            PreparedStatement ps = con.prepareStatement("INSERT INTO, ers_users (user_id, username, email, password, given_name, surname, is_active, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?) )");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO ers_users (user_id, username, email, password, given_name, surname, is_active, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, obj.getUser_id());
             ps.setString(2, obj.getUsername());
             ps.setString(3, obj.getEmail());
             ps.setString(4, obj.getPassword());
             ps.setString(5, obj.getGiven_name());
             ps.setString(6, obj.getSurname());
-            ps.setString(7, obj.getRole_id());
+            ps.setBoolean(7, obj.getIs_active());
+            ps.setString(8, obj.getRole_id());
             ps.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -54,7 +55,7 @@ public class UserDAO implements CrudDAO<User>{
     public List<String> findAllUsernames() {
         List<String> usernames = new ArrayList<String>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
-            PreparedStatement ps = con.prepareStatement("SELECT (username) FROM ers_users");
+            PreparedStatement ps = con.prepareStatement("SELECT (username) FROM reimbursementsys.ers_users");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -70,7 +71,7 @@ public class UserDAO implements CrudDAO<User>{
     public List<String> findAllEmails() {
         List<String> emails = new ArrayList<String>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
-            PreparedStatement ps = con.prepareStatement("SELECT (email) FROM ers_users");
+            PreparedStatement ps = con.prepareStatement("SELECT (email) FROM reimbursementsys.ers_users");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
