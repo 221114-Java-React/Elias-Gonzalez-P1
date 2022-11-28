@@ -2,14 +2,15 @@ package com.revature.reimbursementSystem.models;
 
 public class User {
     //variables
-    private String user_id,username, email, password, given_name, surname, is_active, role_id;
+    private String user_id,username, email, password, given_name, surname, role_id;
+    private boolean is_active;
 
 
     //constructors
     public User(){
         super();
     }
-    public User(String user_id, String username, String email, String password, String given_name, String surname, String is_active, String role_id) {
+    public User(String user_id, String username, String email, String password, String given_name, String surname, boolean is_active, String role_id) {
         this.user_id = user_id;
         this.username = username;
         this.email = email;
@@ -69,11 +70,11 @@ public class User {
         this.surname = surname;
     }
 
-    public String getIs_active() {
+    public boolean getIs_active() {
         return is_active;
     }
 
-    public void setIs_active(String is_active) {
+    public void setIs_active(boolean is_active) {
         this.is_active = is_active;
     }
 

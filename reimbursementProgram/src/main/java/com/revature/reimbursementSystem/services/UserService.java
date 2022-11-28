@@ -27,7 +27,7 @@ public class UserService {
         if (emails.contains((req.getEmail()))) throw new InvalidUserException("Email already exists");
         if (!req.getPassword1().equals(req.getPassword2())) throw new InvalidUserException("Passwords do not match.");
         //after all checks are done
-        User createdUser = new User(UUID.randomUUID().toString(),req.getUsername(), req.getEmail(), req.getPassword1(), req.getGiven_name(), req.getSurname(), "true", "DEFAULT");
+        User createdUser = new User(UUID.randomUUID().toString(),req.getUsername(), req.getEmail(), req.getPassword1(), req.getGiven_name(), req.getSurname(), true, "0");
         userDAO.save(createdUser);
     }
 
