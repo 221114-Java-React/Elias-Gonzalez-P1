@@ -479,3 +479,4 @@ FodyWeavers.xsd
 *.sln.iml
 /reimbursementProgram/src/main/resources/
 /reimbursementProgram/target/
+/reimbursementProgram/target/classes/
