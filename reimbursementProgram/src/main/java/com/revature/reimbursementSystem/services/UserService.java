@@ -34,10 +34,15 @@ public class UserService {
         userDAO.save(createdUser);
     }
 
+    public List<User> getAllUsers(){
+        return userDAO.findAll();
+    }
+
+
     public Principal login(NewLoginRequest req){
         User validUser = userDAO.getUserByUsernameAndPassword(req.getUsername(), req.getPassword());
         if (validUser == null) throw new InvalidAuthException("Invalid username or password");
-        return new Principal(validUser.getUser_id(), req.getUsername(), validUser.getRole_id(), "");
+        return new Principal(validUser.getUser_id(), req.getUsername(), validUser.getRole_id());
     }
 
     private boolean isValidUsername(String username){
