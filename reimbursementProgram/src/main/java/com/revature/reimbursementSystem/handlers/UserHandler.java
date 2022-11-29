@@ -28,33 +28,32 @@ public class UserHandler {
     }
 
 
-
     public void signup(Context c) throws IOException {
         NewUserRequest req = mapper.readValue(c.req.getInputStream(), NewUserRequest.class);
         try {
             userService.saveUser(req);
             c.status(201);
-        }catch (InvalidUserException e){
+        } catch (InvalidUserException e) {
             c.status(403);
             c.json(e);
         }
     }
 
     public void getAllUsers(Context ctx) {
-       try {
-           String token = ctx.req.getHeader("authorization");
-           if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
-           Principal principal = tokenService.extractRequesterDetails(token);
-           if (principal == null) throw new InvalidUserException("Invalid token");
-           if (!principal.getRole_id().equals("2")) throw new InvalidUserException("Not an administrator");
-           //add an IS ACTIVE check for getAll() users.
+        try {
+            String token = ctx.req.getHeader("authorization");
+            if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
+            Principal principal = tokenService.extractRequesterDetails(token);
+            if (principal == null) throw new InvalidUserException("Invalid token");
+            if (!principal.getRole_id().equals("2")) throw new InvalidUserException("Not an administrator");
+            //add an IS ACTIVE check for getAll() users.
 
 
-           logger.info(principal.toString());
-           ctx.json(userService.getAllUsers());
-       }catch (InvalidUserException e){
-           ctx.json(e);
-           ctx.status(401);
-       }
+            logger.info(principal.toString());
+            ctx.json(userService.getAllUsers());
+        } catch (InvalidUserException e) {
+            ctx.json(e);
+            ctx.status(401);
+        }
     }
 }
