@@ -2,7 +2,6 @@ package com.revature.reimbursementSystem.daos;
 
 import com.revature.reimbursementSystem.models.User;
 import com.revature.reimbursementSystem.utils.ConnectionFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
