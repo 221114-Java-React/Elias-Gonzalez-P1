@@ -50,7 +50,11 @@ public class UserDAO implements CrudDAO<User>{
     public List<User> findAll() {
         return null;
     }
+
+
     /*custom methods*/
+
+
     public List<String> findAllUsernames() {
         List<String> usernames = new ArrayList<String>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
