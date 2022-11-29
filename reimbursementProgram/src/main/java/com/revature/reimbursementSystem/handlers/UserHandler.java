@@ -27,6 +27,8 @@ public class UserHandler {
         this.tokenService = tokenService;
     }
 
+
+
     public void signup(Context c) throws IOException {
         NewUserRequest req = mapper.readValue(c.req.getInputStream(), NewUserRequest.class);
         try {
@@ -37,6 +39,7 @@ public class UserHandler {
             c.json(e);
         }
     }
+
     public void getAllUsers(Context ctx) {
        try {
            String token = ctx.req.getHeader("authorization");
@@ -44,7 +47,7 @@ public class UserHandler {
            Principal principal = tokenService.extractRequesterDetails(token);
            if (principal == null) throw new InvalidUserException("Invalid token");
            if (!principal.getRole_id().equals("2")) throw new InvalidUserException("Not an administrator");
-
+           //add an IS ACTIVE check for getAll() users.
 
 
            logger.info(principal.toString());

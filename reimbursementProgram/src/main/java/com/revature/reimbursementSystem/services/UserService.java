@@ -30,7 +30,7 @@ public class UserService {
         if (emails.contains((req.getEmail()))) throw new InvalidUserException("Email already exists");
         if (!req.getPassword1().equals(req.getPassword2())) throw new InvalidUserException("Passwords do not match.");
         //after all checks are done
-        User createdUser = new User(UUID.randomUUID().toString(),req.getUsername(), req.getEmail(), req.getPassword1(), req.getGiven_name(), req.getSurname(), true, "0");
+        User createdUser = new User(UUID.randomUUID().toString(),req.getUsername(), req.getEmail(), req.getPassword1(), req.getGiven_name(), req.getSurname(), false, "0");
         userDAO.save(createdUser);
     }
 
@@ -42,7 +42,7 @@ public class UserService {
     public Principal login(NewLoginRequest req){
         User validUser = userDAO.getUserByUsernameAndPassword(req.getUsername(), req.getPassword());
         if (validUser == null) throw new InvalidAuthException("Invalid username or password");
-        return new Principal(validUser.getUser_id(), req.getUsername(), validUser.getRole_id());
+        return new Principal(validUser.getUser_id(), req.getUsername(), validUser.getIs_active(), validUser.getRole_id());
     }
 
     private boolean isValidUsername(String username){

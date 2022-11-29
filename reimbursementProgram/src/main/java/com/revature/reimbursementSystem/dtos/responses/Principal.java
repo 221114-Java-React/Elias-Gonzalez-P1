@@ -3,6 +3,7 @@ package com.revature.reimbursementSystem.dtos.responses;
 public class Principal {
     private String user_id;
     private String username;
+    private boolean is_active;
     private String role_id;
 
 
@@ -10,9 +11,10 @@ public class Principal {
         super();
     }
 
-    public Principal(String user_id, String username, String role_id) {
+    public Principal(String user_id, String username, boolean is_active, String role_id) {
         this.user_id = user_id;
         this.username = username;
+        this.is_active = is_active;
         this.role_id = role_id;
     }
 
@@ -32,6 +34,14 @@ public class Principal {
         this.username = username;
     }
 
+    public boolean getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(boolean is_active) {
+        this.is_active = is_active;
+    }
+
     public String getRole_id() {
         return role_id;
     }
@@ -45,6 +55,7 @@ public class Principal {
         return "Principal{" +
                 "user_id='" + user_id + '\'' +
                 ", username='" + username + '\'' +
+                ", is_active=" + is_active +
                 ", role_id='" + role_id + '\'' +
                 '}';
     }

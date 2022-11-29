@@ -34,6 +34,7 @@ public class Router {
                 post(c -> userhandler.signup(c));
                 get(c -> userhandler.getAllUsers(c));
             });
+            /*add route to validate users requesting registration*/
 
             //auth
             path("/auth", ()->{
