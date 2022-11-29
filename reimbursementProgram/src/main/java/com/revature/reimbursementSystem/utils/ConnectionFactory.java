@@ -1,6 +1,9 @@
 package com.revature.reimbursementSystem.utils;
 //purpose of this class is to bridge the DAO classes with our DB
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,7 +16,7 @@ import java.util.Properties;
 * while providing a global access point to this instance*/
 public class ConnectionFactory {
     private static ConnectionFactory connectionFactory;
-
+    private static Logger logger = LoggerFactory.getLogger(Connection.class);
 
     /*load in jdbc*/
     static{
@@ -48,7 +51,7 @@ public class ConnectionFactory {
         if (con == null) throw new RuntimeException("Could not establish DB connection");
 
         else{
-            System.out.println(con.toString());
+            logger.info("CONNECTION ESTABLISHED :  " + con);
             return con;
         }
 
