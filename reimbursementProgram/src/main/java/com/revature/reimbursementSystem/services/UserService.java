@@ -1,8 +1,11 @@
 package com.revature.reimbursementSystem.services;
 
 import com.revature.reimbursementSystem.daos.UserDAO;
+import com.revature.reimbursementSystem.dtos.requests.NewLoginRequest;
 import com.revature.reimbursementSystem.dtos.requests.NewUserRequest;
+import com.revature.reimbursementSystem.dtos.responses.Principal;
 import com.revature.reimbursementSystem.models.User;
+import com.revature.reimbursementSystem.utils.customExceptions.InvalidAuthException;
 import com.revature.reimbursementSystem.utils.customExceptions.InvalidUserException;
 
 import java.util.List;
@@ -29,6 +32,12 @@ public class UserService {
         //after all checks are done
         User createdUser = new User(UUID.randomUUID().toString(),req.getUsername(), req.getEmail(), req.getPassword1(), req.getGiven_name(), req.getSurname(), true, "0");
         userDAO.save(createdUser);
+    }
+
+    public Principal login(NewLoginRequest req){
+        User validUser = userDAO.getUserByUsernameAndPassword(req.getUsername(), req.getPassword());
+        if (validUser == null) throw new InvalidAuthException("Invalid username or password");
+        return new Principal(validUser.getUser_id(), req.getUsername(), validUser.getRole_id(), "");
     }
 
     private boolean isValidUsername(String username){
