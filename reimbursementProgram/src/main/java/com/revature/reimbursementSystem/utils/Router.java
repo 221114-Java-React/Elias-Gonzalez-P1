@@ -35,6 +35,10 @@ public class Router {
                 get(c -> userhandler.getAllUsers(c));
             });
             /*add route to validate users requesting registration*/
+            path("/users/update", ()->{
+                post(c -> userhandler.updateUser(c));
+                get(c -> userhandler.getAllInactiveUsers(c));
+            });
 
             //auth
             path("/auth", ()->{
