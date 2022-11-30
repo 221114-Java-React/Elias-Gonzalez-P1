@@ -51,7 +51,6 @@ public class ConnectionFactory {
         if (con == null) throw new RuntimeException("Could not establish DB connection");
 
         else{
-            logger.info("CONNECTION ESTABLISHED :  " + con);
             return con;
         }
 
