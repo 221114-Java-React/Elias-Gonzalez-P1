@@ -1,7 +1,10 @@
 package com.revature.reimbursementSystem.daos;
 
+import com.revature.reimbursementSystem.dtos.requests.UpdateUserRequest;
 import com.revature.reimbursementSystem.models.User;
 import com.revature.reimbursementSystem.utils.ConnectionFactory;
+import com.revature.reimbursementSystem.utils.customExceptions.InvalidUserException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,8 +40,28 @@ public class UserDAO implements CrudDAO<User>{
     }
 
     @Override
-    public void update(User obj) {
+    public void update(User obj) throws InvalidUserException {
+        throw new InvalidUserException("Must have a request to update");
+    }
 
+
+    public void update(UpdateUserRequest req) {
+        User userRequestingUpdate = getUserByUsernameAndPassword(req.getCurrentUsername(), req.getCurrentPassword());
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("UPDATE reimbursementsys.ers_users SET username = ?, email = ?, \"password\" = ?, given_name = ?, surname = ?, is_active = ?, role_id = ? WHERE user_id =?");
+            ps.setString(1, req.getUsername());
+            ps.setString(2, req.getEmail());
+            ps.setString(3, req.getPassword1());
+            ps.setString(4, req.getGiven_name());
+            ps.setString(5, req.getSurname());
+            ps.setBoolean(6, req.getIs_active());
+            ps.setString(7, req.getRole_id());
+            ps.setString(8, userRequestingUpdate.getUser_id());
+
+            ps.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -52,6 +75,7 @@ public class UserDAO implements CrudDAO<User>{
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
             PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursementsys.ers_users");
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 User currentUser = new User(rs.getString("user_id"),rs.getString("username"),rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), rs.getBoolean("is_active"), rs.getString("role_id"));
                 users.add(currentUser);
@@ -75,7 +99,7 @@ public class UserDAO implements CrudDAO<User>{
 
 
             if(rs.next()) {
-                user = new User(rs.getString("user_id"), rs.getString("username"),rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), Boolean.parseBoolean(rs.getString("is_active")), rs.getString("role_id"));
+                user = new User(rs.getString("user_id"), rs.getString("username"),rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), rs.getBoolean("is_active"), rs.getString("role_id"));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -99,6 +123,7 @@ public class UserDAO implements CrudDAO<User>{
         }
         return usernames;
     }
+
     public List<String> findAllEmails() {
         List<String> emails = new ArrayList<String>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
@@ -114,5 +139,22 @@ public class UserDAO implements CrudDAO<User>{
             e.printStackTrace();
         }
         return emails;
+    }
+
+    public List<User> findAllInactiveUsers() {
+        List<User> users = new ArrayList<User>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursementsys.ers_users WHERE is_active = false");
+            ResultSet rs = ps.executeQuery();
+            System.out.println(ps);
+            while (rs.next()) {
+                User currentUser = new User(rs.getString("user_id"),rs.getString("username"),rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), rs.getBoolean("is_active"), rs.getString("role_id"));
+                users.add(currentUser);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return users;
     }
 }
