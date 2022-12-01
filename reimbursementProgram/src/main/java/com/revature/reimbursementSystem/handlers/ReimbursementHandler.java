@@ -34,12 +34,13 @@ public class ReimbursementHandler {
             if (principal == null) throw new InvalidUserException("Invalid token");
             if(!principal.getIs_active()) throw new InvalidUserException("Check with administrator about account access.");
             logger.info(principal.getUsername() +" attempting to create ticket");
-
-
             NewReimbursementRequest req = mapper.readValue(ctx.req.getInputStream(), NewReimbursementRequest.class);
+            //send in req and principal to service
+            reimbursementService.createTicket(req, principal);
             ctx.status(201);
             ctx.json(req);
-            reimbursementService.createTicket(req);
+
+
         }catch (InvalidUserException e) {
             ctx.status(403);
             ctx.json(e);
