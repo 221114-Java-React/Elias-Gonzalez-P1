@@ -3,7 +3,6 @@ package com.revature.reimbursementSystem.handlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.reimbursementSystem.dtos.requests.NewLoginRequest;
 import com.revature.reimbursementSystem.dtos.responses.Principal;
-import com.revature.reimbursementSystem.models.User;
 import com.revature.reimbursementSystem.services.TokenService;
 import com.revature.reimbursementSystem.services.UserService;
 import com.revature.reimbursementSystem.utils.customExceptions.InvalidAuthException;
@@ -20,7 +19,7 @@ public class AuthHandler {
     private final UserService userService;
     private final ObjectMapper mapper;
     private final TokenService tokenService;
-    private static final Logger logger = LoggerFactory.getLogger(User.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthHandler.class);
 
     public AuthHandler(UserService userService, ObjectMapper mapper, TokenService tokenService) {
         this.userService = userService;
