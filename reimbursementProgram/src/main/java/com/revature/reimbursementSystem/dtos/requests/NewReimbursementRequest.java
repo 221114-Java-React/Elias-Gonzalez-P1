@@ -1,11 +1,11 @@
 package com.revature.reimbursementSystem.dtos.requests;
 
 public class NewReimbursementRequest {
-    String description;
-    double amount;
-    String receipt;
-    String payment_id;
-    String type_id;
+    private String description;
+    private double amount;
+    private String receipt;
+    private String payment_id;
+    private String type_id;
 
     public NewReimbursementRequest(){
         super();
@@ -63,7 +63,7 @@ public class NewReimbursementRequest {
     @Override
     public String toString() {
         return "NewReimbursementRequest{" +
-                "description='" + description + '\'' +
+                ", description='" + description + '\'' +
                 ", amount=" + amount +
                 ", receipt='" + receipt + '\'' +
                 ", payment_id='" + payment_id + '\'' +
