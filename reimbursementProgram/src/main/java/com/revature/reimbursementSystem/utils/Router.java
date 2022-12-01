@@ -1,6 +1,7 @@
 package com.revature.reimbursementSystem.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.reimbursementSystem.daos.ReimbursementDAO;
 import com.revature.reimbursementSystem.daos.UserDAO;
 import com.revature.reimbursementSystem.handlers.AuthHandler;
 import com.revature.reimbursementSystem.handlers.UserHandler;
@@ -24,6 +25,9 @@ public class Router {
         UserHandler userhandler = new UserHandler(userService, mapper, tokenService);
         AuthHandler authHandler = new AuthHandler(userService, mapper, tokenService);
 
+        ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
+
+
         /*TODO: Add dependency injections for Reimbursements*/
 
 
@@ -39,6 +43,14 @@ public class Router {
                 post(c -> userhandler.updateUser(c));
                 get(c -> userhandler.getAllInactiveUsers(c));
             });
+
+            path("/reimbursements",() -> {
+                //post(c -> reimbursementHandler.createTicket(c));
+                //get(c -> reimbursementHandler.getAllTickets(c));
+            });
+
+
+
 
             //auth
             path("/auth", ()->{
