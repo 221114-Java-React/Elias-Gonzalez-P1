@@ -41,27 +41,6 @@ public class UserHandler {
     }
 
 
-    public void updateUser(Context ctx) throws IOException {
-        try {
-            String token = ctx.req.getHeader("authorization");
-            if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
-            Principal principal = tokenService.extractRequesterDetails(token);
-            if (principal == null) throw new InvalidUserException("Invalid token");
-            if (!principal.getRole_id().equals("2")) throw new InvalidUserException("Not an administrator");
-            if(!principal.getIs_active()) throw new InvalidUserException("Check with administrator about account access.");
-            UpdateUserRequest req = mapper.readValue(ctx.req.getInputStream(), UpdateUserRequest.class);
-
-            logger.info(principal.getUsername()+" attempting to update with "+req.toString());
-
-            //method to which request is sent
-            userService.updateUser(req);
-        }catch (InvalidUserException e) {
-            ctx.json(e);
-            ctx.status(401);
-        } catch (Exception e) {
-            ctx.json(e);
-            ctx.status(400);
-        }}
     //DEFAULT USER HANDLERS
 
 
@@ -106,5 +85,27 @@ public class UserHandler {
             ctx.status(401);
         }
     }
+
+    public void updateUser(Context ctx) throws IOException {
+        try {
+            String token = ctx.req.getHeader("authorization");
+            if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
+            Principal principal = tokenService.extractRequesterDetails(token);
+            if (principal == null) throw new InvalidUserException("Invalid token");
+            if (!principal.getRole_id().equals("2")) throw new InvalidUserException("Not an administrator");
+            if(!principal.getIs_active()) throw new InvalidUserException("Check with administrator about account access.");
+            UpdateUserRequest req = mapper.readValue(ctx.req.getInputStream(), UpdateUserRequest.class);
+
+            logger.info(principal.getUsername()+" attempting to update with "+req.toString());
+
+            //method to which request is sent
+            userService.updateUser(req);
+        }catch (InvalidUserException e) {
+            ctx.json(e);
+            ctx.status(401);
+        } catch (Exception e) {
+            ctx.json(e);
+            ctx.status(400);
+        }}
     }
 
