@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.reimbursementSystem.daos.ReimbursementDAO;
 import com.revature.reimbursementSystem.daos.UserDAO;
 import com.revature.reimbursementSystem.handlers.AuthHandler;
+import com.revature.reimbursementSystem.handlers.ReimbursementHandler;
 import com.revature.reimbursementSystem.handlers.UserHandler;
+import com.revature.reimbursementSystem.services.ReimbursementService;
 import com.revature.reimbursementSystem.services.TokenService;
 import com.revature.reimbursementSystem.services.UserService;
 import io.javalin.Javalin;
@@ -18,17 +20,17 @@ public class Router {
         ObjectMapper mapper = new ObjectMapper();
         JwtConfig jwtConfig = new JwtConfig();
         TokenService tokenService = new TokenService(jwtConfig);
-        /*User*/
 
+        /*User*/
         UserDAO userDAO = new UserDAO();
         UserService userService = new UserService(userDAO);
         UserHandler userhandler = new UserHandler(userService, mapper, tokenService);
+
         AuthHandler authHandler = new AuthHandler(userService, mapper, tokenService);
-
+        /*Reimbursement*/
         ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
-
-
-        /*TODO: Add dependency injections for Reimbursements*/
+        ReimbursementService reimbursementService = new ReimbursementService(reimbursementDAO);
+        ReimbursementHandler reimbursementHandler = new ReimbursementHandler(reimbursementService, mapper, tokenService);
 
 
         /*handler groups*/
