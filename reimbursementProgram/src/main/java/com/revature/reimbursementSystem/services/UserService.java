@@ -77,7 +77,7 @@ public class UserService {
         if (validUser == null) throw new InvalidAuthException("Invalid username or password");
         //logs time at login
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        logger.info(timestamp.toString());
+        logger.info(timestamp.toString() + "Login request sent from userservice to authhandler");
 
         return new Principal(validUser.getUser_id(), req.getUsername(), validUser.getIs_active(), validUser.getRole_id());
     }
