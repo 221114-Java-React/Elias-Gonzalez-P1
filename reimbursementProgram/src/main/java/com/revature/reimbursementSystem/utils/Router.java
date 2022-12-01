@@ -47,8 +47,8 @@ public class Router {
             });
 
             path("/reimbursements",() -> {
-                //post(c -> reimbursementHandler.createTicket(c));
-                //get(c -> reimbursementHandler.getAllTickets(c));
+                post(c -> reimbursementHandler.createTicket(c));
+                get(c -> reimbursementHandler.getAllTickets(c));
             });
 
 
