@@ -8,7 +8,10 @@ import com.revature.reimbursementSystem.dtos.responses.Principal;
 import com.revature.reimbursementSystem.models.User;
 import com.revature.reimbursementSystem.utils.customExceptions.InvalidAuthException;
 import com.revature.reimbursementSystem.utils.customExceptions.InvalidUserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +26,7 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
+    Logger logger = LoggerFactory.getLogger(UserService.class);
     //methods
     public void saveUser(NewUserRequest req) {
         List<String> usernames = userDAO.findAllUsernames();
@@ -43,6 +47,8 @@ public class UserService {
     public List<User> getAllUsers() {
         return userDAO.findAll();
     }
+
+
 
 
     public void updateUser(UpdateUserRequest req) {
@@ -69,6 +75,10 @@ public class UserService {
     public Principal login(NewLoginRequest req) {
         User validUser = userDAO.getUserByUsernameAndPassword(req.getUsername(), req.getPassword());
         if (validUser == null) throw new InvalidAuthException("Invalid username or password");
+        //logs time at login
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        logger.info(timestamp.toString());
+
         return new Principal(validUser.getUser_id(), req.getUsername(), validUser.getIs_active(), validUser.getRole_id());
     }
 
