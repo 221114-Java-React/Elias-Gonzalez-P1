@@ -51,6 +51,10 @@ public class Router {
                 get(c -> reimbursementHandler.getAllTickets(c));
             });
 
+            path("/reimbursements/update",() -> {
+                post(c -> reimbursementHandler.updateTicket(c));
+                get(c -> reimbursementHandler.getAllPendingTickets(c));
+            });
 
 
 
