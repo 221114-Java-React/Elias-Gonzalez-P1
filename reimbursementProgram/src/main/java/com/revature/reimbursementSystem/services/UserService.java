@@ -26,7 +26,7 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     //methods
     public void saveUser(NewUserRequest req) {
         List<String> usernames = userDAO.findAllUsernames();
