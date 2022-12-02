@@ -77,7 +77,15 @@ public class UserDAO implements CrudDAO<User>{
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                User currentUser = new User(rs.getString("user_id"),rs.getString("username"),rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), rs.getBoolean("is_active"), rs.getString("role_id"));
+                User currentUser = new User(
+                        rs.getString("user_id"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("given_name"),
+                        rs.getString("surname"),
+                        rs.getBoolean("is_active"),
+                        rs.getString("role_id"));
                 users.add(currentUser);
             }
 
@@ -151,6 +159,7 @@ public class UserDAO implements CrudDAO<User>{
                 User currentUser = new User(rs.getString("user_id"),rs.getString("username"),rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), rs.getBoolean("is_active"), rs.getString("role_id"));
                 users.add(currentUser);
             }
+
 
         }catch (SQLException e){
             e.printStackTrace();
