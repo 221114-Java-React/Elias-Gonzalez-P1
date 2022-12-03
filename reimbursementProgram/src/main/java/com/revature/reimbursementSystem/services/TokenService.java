@@ -2,6 +2,7 @@ package com.revature.reimbursementSystem.services;
 
 import com.revature.reimbursementSystem.dtos.responses.Principal;
 import com.revature.reimbursementSystem.utils.JwtConfig;
+import com.revature.reimbursementSystem.utils.customExceptions.InvalidUserException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -44,5 +45,25 @@ public class TokenService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static void validateEmployeeLogin(String token, Principal principal)throws InvalidUserException{
+        if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
+        if (principal == null) throw new InvalidUserException("Invalid token");
+        if(!principal.getIs_active()) throw new InvalidUserException("Check with administrator about account access.");
+    }
+
+    public static void validateAdministratorLogin(String token, Principal principal) throws InvalidUserException{
+        if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
+        if (principal == null) throw new InvalidUserException("Invalid token");
+        if (!principal.getRole_id().equals("2")) throw new InvalidUserException("Not an administrator");
+        if(!principal.getIs_active()) throw new InvalidUserException("Check with administrator about account access.");
+    }
+
+    public static void validateFinanceManagerLogin(String token, Principal principal) throws InvalidUserException{
+        if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
+        if (principal == null) throw new InvalidUserException("Invalid token");
+        if (!principal.getRole_id().equals("2")) throw new InvalidUserException("Not an administrator");
+        if(!principal.getIs_active()) throw new InvalidUserException("Check with administrator about account access.");
     }
 }
