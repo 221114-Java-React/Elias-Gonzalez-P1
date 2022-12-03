@@ -1,12 +1,12 @@
 package com.revature.reimbursementSystem.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.reimbursementSystem.daos.ReimbursementDAO;
+import com.revature.reimbursementSystem.daos.TicketDAO;
 import com.revature.reimbursementSystem.daos.UserDAO;
 import com.revature.reimbursementSystem.handlers.AuthHandler;
-import com.revature.reimbursementSystem.handlers.ReimbursementHandler;
+import com.revature.reimbursementSystem.handlers.TicketHandler;
 import com.revature.reimbursementSystem.handlers.UserHandler;
-import com.revature.reimbursementSystem.services.ReimbursementService;
+import com.revature.reimbursementSystem.services.TicketService;
 import com.revature.reimbursementSystem.services.TokenService;
 import com.revature.reimbursementSystem.services.UserService;
 import io.javalin.Javalin;
@@ -27,10 +27,10 @@ public class Router {
         UserHandler userhandler = new UserHandler(userService, mapper, tokenService);
 
         AuthHandler authHandler = new AuthHandler(userService, mapper, tokenService);
-        /*Reimbursement*/
-        ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
-        ReimbursementService reimbursementService = new ReimbursementService(reimbursementDAO);
-        ReimbursementHandler reimbursementHandler = new ReimbursementHandler(reimbursementService, mapper, tokenService);
+        /*Ticket*/
+        TicketDAO TIcketDAO = new TicketDAO();
+        TicketService ticketService = new TicketService(TIcketDAO);
+        TicketHandler ticketHandler = new TicketHandler(ticketService, mapper, tokenService);
 
 
         /*handler groups*/
@@ -47,13 +47,13 @@ public class Router {
             });
 
             path("/reimbursements",() -> {
-                post(c -> reimbursementHandler.createTicket(c));
-                get(c -> reimbursementHandler.getAllTickets(c));
+                post(c -> ticketHandler.createTicket(c));
+                get(c -> ticketHandler.getAllTickets(c));
             });
 
             path("/reimbursements/update",() -> {
-                put(c -> reimbursementHandler.updateTicket(c));
-                get(c -> reimbursementHandler.getAllPendingTickets(c));
+                put(c -> ticketHandler.updateTicket(c));
+                get(c -> ticketHandler.getAllPendingTickets(c));
             });
 
 
