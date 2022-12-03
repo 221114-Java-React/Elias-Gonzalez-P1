@@ -63,7 +63,14 @@ public class TokenService {
     public static void validateFinanceManagerLogin(String token, Principal principal) throws InvalidUserException{
         if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
         if (principal == null) throw new InvalidUserException("Invalid token");
-        if (!principal.getRole_id().equals("2")) throw new InvalidUserException("Not an administrator");
+        if (!principal.getRole_id().equals("1")) throw new InvalidUserException("Not a Finance Manager");
         if(!principal.getIs_active()) throw new InvalidUserException("Check with administrator about account access.");
+    }
+
+    public static void validateReimbursementAccessLogin(String token, Principal principal) throws InvalidUserException {
+        if (token == null || token.equals("")) throw new InvalidUserException("Not signed in");
+        if (principal == null) throw new InvalidUserException("Invalid token");
+        if (!(principal.getRole_id().equals("1")||principal.getRole_id().equals("0"))) throw new InvalidUserException("Not able to access tickets");
+        if (!principal.getIs_active()) throw new InvalidUserException("Check with administrator about account access.");
     }
 }
