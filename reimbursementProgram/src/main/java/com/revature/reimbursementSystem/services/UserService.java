@@ -47,7 +47,9 @@ public class UserService {
     public List<User> getAllUsers() {
         return userDAO.findAll();
     }
-
+    public List<User> getAllInactiveUsers() {
+        return userDAO.findAllInactiveUsers();
+    }
 
 
 
@@ -97,7 +99,5 @@ public class UserService {
     }
 
 
-    public List<User> getAllInactiveUsers() {
-        return userDAO.findAllInactiveUsers();
-    }
+
 }
