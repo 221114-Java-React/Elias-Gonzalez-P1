@@ -1,17 +1,17 @@
 package com.revature.reimbursementSystem.dtos.requests;
 
-public class NewReimbursementRequest {
+public class NewTicketRequest {
     private String description;
     private double amount;
     private String receipt;
     private String payment_id;
     private String type_id;
 
-    public NewReimbursementRequest(){
+    public NewTicketRequest(){
         super();
     }
 
-    public NewReimbursementRequest(String description, double amount, String receipt, String payment_id, String type_id) {
+    public NewTicketRequest(String description, double amount, String receipt, String payment_id, String type_id) {
         this.description = description;
         this.amount = amount;
         this.receipt = receipt;
@@ -62,7 +62,7 @@ public class NewReimbursementRequest {
 
     @Override
     public String toString() {
-        return "NewReimbursementRequest{" +
+        return "NewTicketRequest{" +
                 ", description='" + description + '\'' +
                 ", amount=" + amount +
                 ", receipt='" + receipt + '\'' +

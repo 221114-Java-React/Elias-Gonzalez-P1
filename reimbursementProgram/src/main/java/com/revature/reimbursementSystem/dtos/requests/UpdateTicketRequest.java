@@ -1,14 +1,14 @@
 package com.revature.reimbursementSystem.dtos.requests;
 
-public class UpdateReimbursementRequest {
+public class UpdateTicketRequest {
     String reimb_id;
     String status_id;
 
-    public UpdateReimbursementRequest() {
+    public UpdateTicketRequest() {
         super();
     }
 
-    public UpdateReimbursementRequest(String reimb_id, String status_id) {
+    public UpdateTicketRequest(String reimb_id, String status_id) {
         this.reimb_id = reimb_id;
         this.status_id = status_id;
     }
@@ -32,7 +32,7 @@ public class UpdateReimbursementRequest {
 
     @Override
     public String toString() {
-        return "UpdateReimbursementRequest{" +
+        return "UpdateTicketRequest{" +
                 "reimb_id='" + reimb_id + '\'' +
                 ", status_id='" + status_id + '\'' +
                 '}';

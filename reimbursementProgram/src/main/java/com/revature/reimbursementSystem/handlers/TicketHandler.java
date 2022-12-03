@@ -1,10 +1,10 @@
 package com.revature.reimbursementSystem.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.reimbursementSystem.dtos.requests.NewReimbursementRequest;
-import com.revature.reimbursementSystem.dtos.requests.UpdateReimbursementRequest;
+import com.revature.reimbursementSystem.dtos.requests.NewTicketRequest;
+import com.revature.reimbursementSystem.dtos.requests.UpdateTicketRequest;
 import com.revature.reimbursementSystem.dtos.responses.Principal;
-import com.revature.reimbursementSystem.services.ReimbursementService;
+import com.revature.reimbursementSystem.services.TicketService;
 import com.revature.reimbursementSystem.services.TokenService;
 import com.revature.reimbursementSystem.utils.customExceptions.InvalidUserException;
 import io.javalin.http.Context;
@@ -16,17 +16,17 @@ import java.io.IOException;
 //purpose of this handler class is to handle http verbs and endpoints
 //hierarchy dependency injection -> user-handler -> user service -> userDAO
 
-public class ReimbursementHandler {
+public class TicketHandler {
 
     //dependencies
-    private final ReimbursementService reimbursementService;
+    private final TicketService ticketService;
     private final ObjectMapper mapper;
     private final TokenService tokenService;
-    private final static Logger logger = LoggerFactory.getLogger(ReimbursementHandler.class);
+    private final static Logger logger = LoggerFactory.getLogger(TicketHandler.class);
 
     //constructor
-    public ReimbursementHandler(ReimbursementService reimbursementService, ObjectMapper mapper, TokenService tokenService) {
-        this.reimbursementService = reimbursementService;
+    public TicketHandler(TicketService ticketService, ObjectMapper mapper, TokenService tokenService) {
+        this.ticketService = ticketService;
         this.mapper = mapper;
         this.tokenService = tokenService;
     }
@@ -38,8 +38,8 @@ public class ReimbursementHandler {
             Principal principal = tokenService.extractRequesterDetails(token);
             TokenService.validateEmployeeLogin(token, principal);
             logger.info(principal.getUsername() +" attempting to createTicket");
-            NewReimbursementRequest req = mapper.readValue(ctx.req.getInputStream(), NewReimbursementRequest.class);
-            reimbursementService.createTicket(req, principal);
+            NewTicketRequest req = mapper.readValue(ctx.req.getInputStream(), NewTicketRequest.class);
+            ticketService.createTicket(req, principal);
             ctx.status(201);
             ctx.json(req);
         }catch (InvalidUserException e) {
@@ -56,10 +56,11 @@ public class ReimbursementHandler {
         try {
             String token = ctx.req.getHeader("authorization");
             Principal principal = tokenService.extractRequesterDetails(token);
-            TokenService.validateFinanceManagerLogin(token, principal);
-            logger.info(principal.getUsername() +" attempting to getAllTickets");
+            TokenService.validateEmployeeLogin(token, principal);
+            String msg = principal.getRole_id().equals("1") ? " attempting to getAllTickets" : " attempting to usersTickets";
+            logger.info(principal.getUsername() + msg);
             ctx.status(202);
-            ctx.json(reimbursementService.getAllTickets());
+            ctx.json(ticketService.getAllTickets(principal));
         }catch (InvalidUserException e) {
             ctx.status(403);
             ctx.json(e);
@@ -76,7 +77,7 @@ public class ReimbursementHandler {
             TokenService.validateFinanceManagerLogin(token, principal);
             logger.info(principal.getUsername() +" attempting to getAllPendingTickets");
             ctx.status(202);
-            ctx.json(reimbursementService.getPendingTickets());
+            ctx.json(ticketService.getPendingTickets());
         }catch (InvalidUserException e) {
             ctx.status(403);
             ctx.json(e);
@@ -86,18 +87,16 @@ public class ReimbursementHandler {
         }
     }
 
-    //TODO: CHECK THE TOKEN FOR USER.TYPEID, then if it IS a employee send to overloaded reimbursementService.updateReimbursement
-    // for full access to modifying ticket.
     public void updateTicket(Context ctx) {
         try {
             String token = ctx.req.getHeader("authorization");
             Principal principal = tokenService.extractRequesterDetails(token);
-            TokenService.validateFinanceManagerLogin(token, principal);
+            //only users with access to tickets are allowed through
+            TokenService.validateReimbursementAccessLogin(token, principal);
             logger.info(principal.getUsername() +" attempting to updateReimbursement");
-            UpdateReimbursementRequest req = mapper.readValue(ctx.req.getInputStream(), UpdateReimbursementRequest.class);
+            UpdateTicketRequest req = mapper.readValue(ctx.req.getInputStream(), UpdateTicketRequest.class);
+            ticketService.updateTicket(req, principal);
             ctx.status(202);
-            reimbursementService.updateReimbursement(req, principal);
-            logger.info("passed handler " + req.toString());
         }catch (InvalidUserException e) {
             ctx.status(403);
             ctx.json(e);

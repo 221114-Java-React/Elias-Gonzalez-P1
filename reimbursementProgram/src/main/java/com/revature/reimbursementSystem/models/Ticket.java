@@ -2,7 +2,7 @@ package com.revature.reimbursementSystem.models;
 
 import java.sql.Timestamp;
 
-public class Reimbursement {
+public class Ticket {
     private String reimb_id, description, payment_id, author_id, resolver_id, status_id, type_id;
     Timestamp submitted;
     Timestamp resolved;
@@ -12,7 +12,7 @@ public class Reimbursement {
     //new Timestamp(System.currentTimeMillis());
 
 
-    public Reimbursement(String reimb_id, String description, String payment_id, String author_id, String resolver_id, String status_id, String type_id, Timestamp submitted, Timestamp resolved, String receipt, double amount) {
+    public Ticket(String reimb_id, String description, String payment_id, String author_id, String resolver_id, String status_id, String type_id, Timestamp submitted, Timestamp resolved, String receipt, double amount) {
         this.reimb_id = reimb_id;
         this.description = description;
         this.payment_id = payment_id;
@@ -118,7 +118,7 @@ public class Reimbursement {
 
     @Override
     public String toString() {
-        return "Reimbursement{" +
+        return "Ticket{" +
                 "reimb_id='" + reimb_id + '\'' +
                 ", description='" + description + '\'' +
                 ", payment_id='" + payment_id + '\'' +
