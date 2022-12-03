@@ -42,7 +42,7 @@ public class Router {
             });
             /*add route to validate users requesting registration*/
             path("/users/update", ()->{
-                post(c -> userhandler.updateUser(c));
+                put(c -> userhandler.updateUser(c));
                 get(c -> userhandler.getAllInactiveUsers(c));
             });
 
@@ -52,7 +52,7 @@ public class Router {
             });
 
             path("/reimbursements/update",() -> {
-                post(c -> reimbursementHandler.updateTicket(c));
+                put(c -> reimbursementHandler.updateTicket(c));
                 get(c -> reimbursementHandler.getAllPendingTickets(c));
             });
 
