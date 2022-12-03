@@ -14,35 +14,8 @@ import java.util.List;
 public class ReimbursementDAO implements CrudDAO<Reimbursement>{
 
     //custom methods
+
     //financeManagerOnly
-    public List<Reimbursement> getAllPendingReimbursements(){
-        List<Reimbursement> pendingReimbursements = new ArrayList<Reimbursement>();
-        try (Connection con = ConnectionFactory.getInstance().getConnection()){
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursementsys.ers_reimbursements WHERE status_id = '0' ");
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Reimbursement currentReimbursement = new Reimbursement(
-                        rs.getString("reimb_id"),
-                        rs.getString("description"),
-                        rs.getString("payment_id"),
-                        rs.getString("author_id"),
-                        rs.getString("resolver_id"),
-                        rs.getString("status_id"),
-                        rs.getString("type_id"),
-                        rs.getTimestamp("submitted"),
-                        rs.getTimestamp("resolved"),
-                        rs.getString("receipt"),
-                        rs.getDouble("amount"));
-                pendingReimbursements.add(currentReimbursement);
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return pendingReimbursements;
-    }
-
-
 
     @Override
     public void save(Reimbursement obj) {
@@ -96,7 +69,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement>{
     */
 
 
-
     @Override
     public List<Reimbursement> findAll() {
         List<Reimbursement> allReimbursements = new ArrayList<Reimbursement>();
@@ -125,13 +97,54 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement>{
         return allReimbursements;
     }
 
+    public List<String> findAllIds() {
+        List<String> ticketIds = new ArrayList<String>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT (reimb_id) FROM reimbursementsys.ers_reimbursements");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String currentId = rs.getString("reimb_id");
+                ticketIds.add(currentId);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return ticketIds;
+    }
+
+    public List<Reimbursement> getAllPendingReimbursements(){
+        List<Reimbursement> pendingReimbursements = new ArrayList<Reimbursement>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursementsys.ers_reimbursements WHERE status_id = '0' ");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Reimbursement currentReimbursement = new Reimbursement(
+                        rs.getString("reimb_id"),
+                        rs.getString("description"),
+                        rs.getString("payment_id"),
+                        rs.getString("author_id"),
+                        rs.getString("resolver_id"),
+                        rs.getString("status_id"),
+                        rs.getString("type_id"),
+                        rs.getTimestamp("submitted"),
+                        rs.getTimestamp("resolved"),
+                        rs.getString("receipt"),
+                        rs.getDouble("amount"));
+                pendingReimbursements.add(currentReimbursement);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return pendingReimbursements;
+    }
+
     @Override
     public Reimbursement findById(){
         return null;
     }
-
-
-
 
     public Reimbursement findByReimb_id(String id) {
         Reimbursement reimbursement = null;
@@ -139,7 +152,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement>{
             PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursementsys.ers_reimbursements WHERE reimb_id = ?");
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
-
 
             if(rs.next()) {
                 reimbursement = new Reimbursement(
@@ -161,20 +173,5 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement>{
         return reimbursement;
     }
 
-    public List<String> findAllIds() {
-        List<String> ticketIds = new ArrayList<String>();
-        try (Connection con = ConnectionFactory.getInstance().getConnection()){
-            PreparedStatement ps = con.prepareStatement("SELECT (reimb_id) FROM reimbursementsys.ers_reimbursements");
-            ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                String currentId = rs.getString("reimb_id");
-                ticketIds.add(currentId);
-            }
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return ticketIds;
-    }
 }
