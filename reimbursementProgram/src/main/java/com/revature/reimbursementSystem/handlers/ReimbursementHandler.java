@@ -104,7 +104,7 @@ public class ReimbursementHandler {
 
             UpdateReimbursementRequest req = mapper.readValue(ctx.req.getInputStream(), UpdateReimbursementRequest.class);
             logger.info("passed handler " + req.toString());
-            reimbursementService.updateReimbursement(req);
+            reimbursementService.updateReimbursement(req, principal);
 
         }catch (InvalidUserException e) {
             ctx.status(403);

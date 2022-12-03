@@ -52,15 +52,19 @@ public class ReimbursementService {
 
 
     //TODO: figure out how to overload this method with a principal to check if it is a USER UPDATING THEIR OWN TICKET
-    public void updateReimbursement(UpdateReimbursementRequest req) {
+    public void updateReimbursement(UpdateReimbursementRequest req, Principal principal) {
         List<String> tickets = getAllTicketIds();
         Reimbursement currentTicket = reimbursementDAO.findByReimb_id(req.getReimb_id());
         if(req.getReimb_id().isEmpty()||req.getReimb_id()==null)throw new InvalidTicketException("Invalid Reimbursement ID");
         if(req.getStatus_id().equals("0"))throw new InvalidTicketException("Ticket cannot be set to pending");
         if(!tickets.contains(req.getReimb_id()))throw new InvalidTicketException("Invalid Reimbursement ID");
         if (!currentTicket.getStatus_id().equals("0"))throw new InvalidTicketException("Ticket has already been resolved");
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        currentTicket.setResolved(currentTimestamp);
+        currentTicket.setResolver_id(principal.getUser_id());
+        currentTicket.setStatus_id(req.getStatus_id());
         logger.info("Reimbursement passed to reimbursementDAO");
-        reimbursementDAO.update(req);
+        reimbursementDAO.update(currentTicket);
     }
 
 

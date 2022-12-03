@@ -1,9 +1,7 @@
 package com.revature.reimbursementSystem.daos;
 
-import com.revature.reimbursementSystem.dtos.requests.UpdateReimbursementRequest;
 import com.revature.reimbursementSystem.models.Reimbursement;
 import com.revature.reimbursementSystem.utils.ConnectionFactory;
-import com.revature.reimbursementSystem.utils.customExceptions.InvalidTicketException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +16,7 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement>{
     //custom methods
     //financeManagerOnly
     public List<Reimbursement> getAllPendingReimbursements(){
-        List<Reimbursement> pendingReimbusements = new ArrayList<Reimbursement>();
+        List<Reimbursement> pendingReimbursements = new ArrayList<Reimbursement>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
             PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursementsys.ers_reimbursements WHERE status_id = '0' ");
             ResultSet rs = ps.executeQuery();
@@ -36,12 +34,12 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement>{
                         rs.getTimestamp("resolved"),
                         rs.getString("receipt"),
                         rs.getDouble("amount"));
-                pendingReimbusements.add(currentReimbursement);
+                pendingReimbursements.add(currentReimbursement);
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return pendingReimbusements;
+        return pendingReimbursements;
     }
 
 
@@ -68,9 +66,21 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement>{
 
     @Override
     public void update(Reimbursement obj) {
-        throw new InvalidTicketException("Please add a valid reimbursement request");
-    }
+        Reimbursement reimbursementRequiringUpdate = findByReimb_id(obj.getReimb_id());
+        System.out.println(reimbursementRequiringUpdate.toString());
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("UPDATE reimbursementsys.ers_reimbursements SET status_id = ?, resolved= ?, resolver_id = ?  WHERE reimb_id = ?");
+            ps.setString(1, obj.getStatus_id());
+            ps.setTimestamp(2,obj.getResolved());
+            ps.setString(3, obj.getResolver_id());
+            ps.setString(4, obj.getReimb_id());
 
+            ps.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        };
+    }
+    /*
     public void update(UpdateReimbursementRequest obj){
         Reimbursement reimbursementRequiringUpdate = findByReimb_id(obj.getReimb_id());
         System.out.println(reimbursementRequiringUpdate.toString());
@@ -82,9 +92,8 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement>{
         }catch (SQLException e){
             e.printStackTrace();
         }
-
-
     }
+    */
 
 
 
