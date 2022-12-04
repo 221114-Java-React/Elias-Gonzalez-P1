@@ -42,8 +42,8 @@ Reimbursements are to be one of the following types:
 - [x] An admin user can approve or deny new registration requests
 - [x] The system will register the user's information for payment processing
 - [x] A registered employee can authenticate with the system by providing valid credentials
-- [ ] An authenticated employee can view and manage their pending reimbursement requests
-- [ ] An authenticated employee can view their reimbursement request history (sortable and filterable)
+- [x] An authenticated employee can view and manage their pending reimbursement requests
+- [x] An authenticated employee can view their reimbursement request history (sortable and filterable)
 - [x] An authenticated employee can submit a new reimbursement request
 - [x] An authenticated finance manager can view a list of all pending reimbursement requests
 - [x] An authenticated finance manager can view a history of requests that they have approved/denied
@@ -55,7 +55,7 @@ Reimbursements are to be one of the following types:
 
 - [x] Basic validation is enforced to ensure that invalid/improper data is not persisted
 - [ ] User passwords will be encrypted by the system before persisting them to the data source
-- [ ] Users are unable to recall reimbursement requests once they have been processed (only pending allowed)
+- [x] Users are unable to recall reimbursement requests once they have been processed (only pending allowed)
 - [x] Sensitive endpoints are protected from unauthenticated and unauthorized requesters using JWTs
 - [x] Errors and exceptions are handled properly and their details are obfuscated from the user
 - [x] The system conforms to RESTful architecture constraints
