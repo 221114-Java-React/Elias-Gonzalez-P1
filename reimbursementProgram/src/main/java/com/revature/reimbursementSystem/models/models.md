@@ -1,2 +1,0 @@
-- The models in this folder are linked to the individual tables in DB.
-- Picture this as a unit of measurement for a table

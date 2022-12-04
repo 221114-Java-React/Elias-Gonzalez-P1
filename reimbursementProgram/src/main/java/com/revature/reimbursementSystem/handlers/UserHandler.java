@@ -35,7 +35,7 @@ public class UserHandler {
     public void signup(Context ctx) throws IOException {
         NewUserRequest req = mapper.readValue(ctx.req.getInputStream(), NewUserRequest.class);
         try {
-            userService.saveUser(req);
+            ctx.json(userService.saveUser(req));
             ctx.status(201);
         } catch (InvalidUserException | NoSuchAlgorithmException e) {
             ctx.status(403);
@@ -55,6 +55,7 @@ public class UserHandler {
             Principal principal = tokenService.extractRequesterDetails(token);
             TokenService.validateAdministratorLogin(token, principal);
             ctx.json(userService.getAllUsers());
+            ctx.status(302);
             logger.info(principal.getUsername() +": getAllUsers passed handler. ");
         } catch (InvalidUserException e) {
             ctx.json(e);
@@ -68,6 +69,7 @@ public class UserHandler {
             Principal principal = tokenService.extractRequesterDetails(token);
             TokenService.validateAdministratorLogin(token, principal);
             ctx.json(userService.getAllInactiveUsers());
+            ctx.status(302);
             logger.info(principal.getUsername() +": getAllUsers SUCCESS");
         } catch (InvalidUserException e) {
             ctx.json(e);
@@ -82,8 +84,10 @@ public class UserHandler {
             TokenService.validateAdministratorLogin(token, principal);
             UpdateUserRequest req = mapper.readValue(ctx.req.getInputStream(), UpdateUserRequest.class);
             logger.info(principal.getUsername()+" attempting to update with "+req.toString());
-            ctx.json(req);
+            //todo add all validation from service here
             userService.updateUser(req);
+            ctx.json(req);
+            ctx.status(202);
         }catch (InvalidUserException e) {
             ctx.json(e);
             ctx.status(401);

@@ -76,7 +76,7 @@ public class TicketService {
 
     public List<Ticket> getAllTickets(Principal principal) {
         if (principal.getRole_id().equals("0")){
-            return TicketDAO.getAllPendingTicketsByUserId(principal);
+            return TicketDAO.getAllTicketsByUserId(principal);
         } else if (principal.getRole_id().equals("2")) {
             throw new InvalidUserException("Administrators cannot access tickets");
         }

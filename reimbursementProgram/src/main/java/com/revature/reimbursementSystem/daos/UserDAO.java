@@ -50,6 +50,9 @@ public class UserDAO implements CrudDAO<User>{
 
 
     public void update(UpdateUserRequest req) {
+        /*todo update UserDAO.save to take in a user object instead of UpdateUserRequest
+         * inherently USER objects encrypt password, while requests encrypt in DAO at ps.setString(3)
+         */
         User userRequestingUpdate = getUserByUsernameAndPassword(req.getCurrentUsername(), req.getCurrentPassword());
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
             PreparedStatement ps = con.prepareStatement("UPDATE reimbursementsys.ers_users SET username = ?, email = ?, \"password\" = ?, given_name = ?, surname = ?, is_active = ?, role_id = ? WHERE user_id =?");
@@ -75,6 +78,8 @@ public class UserDAO implements CrudDAO<User>{
 
     @Override
     public List<User> findAll() {
+        /*TODO fix bug where RETURN ALL creates a list of users, and ENCRYPTS encrypted passwords again,
+        *  this does not affect program functionality, but adds a a layer of encryption to json return*/
         List<User> users = new ArrayList<User>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
             PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursementsys.ers_users");
