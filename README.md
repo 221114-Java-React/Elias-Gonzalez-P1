@@ -64,8 +64,30 @@ be the same as the created database's URL and Port.
 - At this point you may configure the main driver's 'port' value in the MainDriver.java in order to specify the port you would like you make requests to.
 - Generate HTTP requests to the paths specified in the Router.java class under the util directory.
   - Certain HTTP requests will require formatting. For example: POST to the /ticket endpoint will require an 'authorization' token in the header, 
-as well as a body request. Please see the documentation below in 'Request Format' for more information.
+as well as a body request. Please see the documentation below in 'Request Format' for more information. More detailed request formats can be provided at request or by looking under the DTO directory.
 
+
+### Example Request Formats:
+- Add User POST /reimbursementSystem/users
+```
+{
+    "username":"tester001",
+    "email":"tester001@gmail.com",
+    "given_name":"Test",
+    "surname":"McTest",
+    "password1":"passw0rd",
+    "password2":"passw0rd"
+    }
+```
+- Get All Tickets GET /reimbursementSystem/reimbursements
+Place 'authorization' token in header
+- Authenthicaton Request POST /reimbursementSystem/auth
+```
+{
+    "username": "tester001",
+    "password": "passw0rd"
+}
+```
 
 ### Functional Requirements
 
