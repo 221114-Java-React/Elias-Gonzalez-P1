@@ -16,17 +16,17 @@ This is achieved by allowing three types of users to access the system:
   - Administrators do not explicitly delete users from database but rather disable database access to accounts. This is necessary to allow a user and the user's information to continue to be associated to a previously created ticket.
 
 ##### System Use Case Diagrams
-![System Use Case Diagrams](https://raw.githubusercontent.com/220207-java-enterprise/assignments/main/foundations-project/imgs/ERS%20Use%20Case%20Diagram.png)
+![System Use Case Diagrams](https://raw.githubusercontent.com/221114-Java-React/Elias-Gonzalez-P1/main/reimbursementProgram/images/useCaseDiagram.png)
 
 
 ### Project Design Specifications and Documents
 
 ##### Relational Data Model
-![Relational Model]()
+![Relational Model](https://raw.githubusercontent.com/221114-Java-React/Elias-Gonzalez-P1/main/reimbursementProgram/images/relationalModel.png)
 
 
-##### Reimbursment Status State Flow
-![Reimbursment Status State Flow]()
+##### Reimbursment System Flow
+![Reimbursment Status State Flow](https://raw.githubusercontent.com/221114-Java-React/Elias-Gonzalez-P1/main/reimbursementProgram/images/SystemFlow.jpeg)
 
 ### Technologies
 
