@@ -6,7 +6,7 @@
 The ers_reimbursement system is an Application Program Interface (API) that allows companies to manage employee reimbursement requests.
 
 This is achieved by allowing three types of users to access the system:
-- Employee (Role 0): Employees can create tickets, after which they can access and manage their own pending reimbursement requests. Employees cannot access reimbursement requests after they have been resolved.
+- Employee (Role 0): Employees can create tickets, after which they can access and manage their own pending reimbursement requests.
 
 
 - Finance Manager (Role 1): Finance Managers can access all reimbursement tickets and ticket details and approve and deny tickets. However, they are not allowed to alter details of said tickets. Finance managers can also filter by pending tickets.
