@@ -43,11 +43,17 @@ public class TicketDAO implements CrudDAO<Ticket>{
         Ticket ticketRequiringUpdate = findByReimb_id(obj.getReimb_id());
         System.out.println(ticketRequiringUpdate.toString());
         try (Connection con = ConnectionFactory.getInstance().getConnection()){
-            PreparedStatement ps = con.prepareStatement("UPDATE reimbursementsys.ers_reimbursements SET status_id = ?, resolved= ?, resolver_id = ?  WHERE reimb_id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE reimbursementsys.ers_reimbursements SET status_id = ?, amount= ?, description= ?, receipt= ?, payment_id= ?, type_id= ?, resolved= ?, resolver_id = ?  WHERE reimb_id = ?");
+            //PreparedStatement ps = con.prepareStatement("UPDATE reimbursementsys.ers_reimbursements SET status_id = ?, resolved= ?, resolver_id = ?  WHERE reimb_id = ?");
             ps.setString(1, obj.getStatus_id());
-            ps.setTimestamp(2,obj.getResolved());
-            ps.setString(3, obj.getResolver_id());
-            ps.setString(4, obj.getReimb_id());
+            ps.setDouble(2, obj.getAmount());
+            ps.setString(3, obj.getDescription());
+            ps.setBytes(4, obj.getReceipt().getBytes());
+            ps.setString(5, obj.getPayment_id());
+            ps.setString(6, obj.getType_id());
+            ps.setTimestamp(7,obj.getResolved());
+            ps.setString(8, obj.getResolver_id());
+            ps.setString(9, obj.getReimb_id());
 
             ps.executeUpdate();
         }catch (SQLException e){
@@ -169,6 +175,35 @@ public class TicketDAO implements CrudDAO<Ticket>{
         }
         return userTickets;
     }
+
+    public static List<Ticket> getAllPendingTicketsByUserId(Principal principal) {
+        List<Ticket> userTickets = new ArrayList<Ticket>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursementsys.ers_reimbursements WHERE author_id = ? AND status_id = '0' ");
+            ps.setString(1, principal.getUser_id());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Ticket currentTicket = new Ticket(
+                        rs.getString("reimb_id"),
+                        rs.getString("description"),
+                        rs.getString("payment_id"),
+                        rs.getString("author_id"),
+                        rs.getString("resolver_id"),
+                        rs.getString("status_id"),
+                        rs.getString("type_id"),
+                        rs.getTimestamp("submitted"),
+                        rs.getTimestamp("resolved"),
+                        rs.getString("receipt"),
+                        rs.getDouble("amount"));
+                userTickets.add(currentTicket);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return userTickets;
+    }
+
 
     @Override
     public Ticket findById(){

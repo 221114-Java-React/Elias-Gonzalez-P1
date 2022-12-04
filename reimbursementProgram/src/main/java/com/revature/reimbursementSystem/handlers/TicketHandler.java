@@ -95,7 +95,7 @@ public class TicketHandler {
             TokenService.validateReimbursementAccessLogin(token, principal);
             logger.info(principal.getUsername() +" attempting to updateReimbursement");
             UpdateTicketRequest req = mapper.readValue(ctx.req.getInputStream(), UpdateTicketRequest.class);
-            ticketService.updateTicket(req, principal);
+            ctx.json(ticketService.updateTicket(req, principal));
             ctx.status(202);
         }catch (InvalidUserException e) {
             ctx.status(403);

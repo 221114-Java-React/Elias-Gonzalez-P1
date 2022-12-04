@@ -40,7 +40,9 @@ public class Ticket {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if(!(description == null || description.isEmpty())){
+            this.description = description;
+        }
     }
 
     public String getPayment_id() {
@@ -48,7 +50,9 @@ public class Ticket {
     }
 
     public void setPayment_id(String payment_id) {
-        this.payment_id = payment_id;
+        if (!(payment_id == null || payment_id.isEmpty())){
+            this.payment_id = payment_id;
+        }
     }
 
     public String getAuthor_id() {
@@ -80,7 +84,9 @@ public class Ticket {
     }
 
     public void setType_id(String type_id) {
-        this.type_id = type_id;
+        if (!(type_id == null || type_id.isEmpty())) {
+            this.type_id = type_id;
+        }
     }
 
     public Timestamp getSubmitted() {
@@ -104,7 +110,10 @@ public class Ticket {
     }
 
     public void setReceipt(String receipt) {
-        this.receipt = receipt;
+        if(!(receipt == null || receipt.isEmpty())){
+            this.receipt = receipt;
+        }
+
     }
 
     public double getAmount() {
@@ -112,7 +121,10 @@ public class Ticket {
     }
 
     public void setAmount(double amount) {
-        this.amount = amount;
+        if(!(amount == 0)){
+            this.amount = amount;
+        }
+
     }
 
 

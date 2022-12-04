@@ -21,11 +21,11 @@ public class TicketService {
     List<String> typeList = Arrays.asList(types);
 
     //dependency
-    private final TicketDAO TIcketDAO;
+    private final TicketDAO ticketDAO;
     private static final Logger logger = LoggerFactory.getLogger(TicketService.class);
     //constructor
-    public TicketService(TicketDAO TIcketDAO) {
-        this.TIcketDAO = TIcketDAO;
+    public TicketService(TicketDAO ticketDAO) {
+        this.ticketDAO = ticketDAO;
     }
 
 
@@ -37,7 +37,7 @@ public class TicketService {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         Ticket createdTicket = new Ticket(UUID.randomUUID().toString(), req.getDescription(), req.getPayment_id(), principal.getUser_id(), null, "0", req.getType_id(), currentTimestamp, null, req.getReceipt(), req.getAmount());
         logger.info(createdTicket.toString());
-        TIcketDAO.save(createdTicket);
+        ticketDAO.save(createdTicket);
     }
 
 
@@ -53,34 +53,37 @@ public class TicketService {
     }
 
 
-    //todo add if statement that checks principal for role_id and passes it to
-    public void updateTicket(UpdateTicketRequest req, Principal principal) {
+    //todo add if statement that does not allow users to change their own StatusID
+    public Ticket updateTicket(UpdateTicketRequest req, Principal principal) {
         List<Ticket> allTickets = getAllTickets(principal);
         List<String> ticketIds = allTicketsToAllIds(allTickets);
-        Ticket currentTicket = TIcketDAO.findByReimb_id(req.getReimb_id());
+        Ticket currentTicket = ticketDAO.findByReimb_id(req.getReimb_id());
         updateTicketValidation(req, ticketIds, currentTicket);
+        if (principal.getRole_id().equals("0")){
+            employeeTicketSetter(currentTicket, req);
+        }else{
+            finance_managerTicketSetter(currentTicket, req, principal);
+        }
+        logger.info(currentTicket.toString());
 
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-        currentTicket.setResolved(currentTimestamp);
-        currentTicket.setResolver_id(principal.getUser_id());
-        currentTicket.setStatus_id(req.getStatus_id());
         logger.info("Ticket passed to TicketDAO");
-        TIcketDAO.update(currentTicket);
+        ticketDAO.update(currentTicket);
+        return ticketDAO.findByReimb_id(req.getReimb_id());
     }
 
 
-    public List<Ticket> getAllTickets() {return TIcketDAO.findAll();}
+    public List<Ticket> getAllTickets() {return ticketDAO.findAll();}
 
     public List<Ticket> getAllTickets(Principal principal) {
         if (principal.getRole_id().equals("0")){
-            return TIcketDAO.getAllTicketsByUserId(principal);
+            return TicketDAO.getAllPendingTicketsByUserId(principal);
         } else if (principal.getRole_id().equals("2")) {
             throw new InvalidUserException("Administrators cannot access tickets");
         }
-        return TIcketDAO.findAll();}
+        return ticketDAO.findAll();}
 
-    public List<String> getAllTicketIds() {return TIcketDAO.findAllIds();}
-    public List<Ticket> getPendingTickets() {return TIcketDAO.getAllPendingTickets();}
+    public List<String> getAllTicketIds() {return ticketDAO.findAllIds();}
+    public List<Ticket> getPendingTickets() {return ticketDAO.getAllPendingTickets();}
 
 
     //helper methods
@@ -99,5 +102,19 @@ public class TicketService {
         return allIds;
     }
 
+    public void employeeTicketSetter(Ticket currentTicket, UpdateTicketRequest request){
+        currentTicket.setAmount(request.getAmount());
+        currentTicket.setDescription(request.getDescription());
+        currentTicket.setReceipt(request.getReceipt());
+        currentTicket.setPayment_id(request.getPayment_id());
+        currentTicket.setType_id(request.getType_id());
+    }
+
+    public void finance_managerTicketSetter(Ticket currentTicket, UpdateTicketRequest req, Principal principal){
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        currentTicket.setResolved(currentTimestamp);
+        currentTicket.setResolver_id(principal.getUser_id());
+        currentTicket.setStatus_id(req.getStatus_id());
+    }
 
 }
