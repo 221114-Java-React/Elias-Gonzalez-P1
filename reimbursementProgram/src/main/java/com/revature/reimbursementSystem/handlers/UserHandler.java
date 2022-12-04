@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 //purpose of this handler class is to handle http verbs and endpoints
 //hierarchy dependency injection -> user-handler -> user service -> userDAO
@@ -36,7 +37,7 @@ public class UserHandler {
         try {
             userService.saveUser(req);
             ctx.status(201);
-        } catch (InvalidUserException e) {
+        } catch (InvalidUserException | NoSuchAlgorithmException e) {
             ctx.status(403);
             ctx.json(e);
         }

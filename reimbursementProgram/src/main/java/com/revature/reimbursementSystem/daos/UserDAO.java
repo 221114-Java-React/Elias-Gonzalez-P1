@@ -3,8 +3,10 @@ package com.revature.reimbursementSystem.daos;
 import com.revature.reimbursementSystem.dtos.requests.UpdateUserRequest;
 import com.revature.reimbursementSystem.models.User;
 import com.revature.reimbursementSystem.utils.ConnectionFactory;
+import com.revature.reimbursementSystem.utils.HashBrowns;
 import com.revature.reimbursementSystem.utils.customExceptions.InvalidUserException;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +17,8 @@ import java.util.List;
 /*Purpose of a DAO is to return data from the database
 * DAO = DATA ACCESS OBJECT*/
 public class UserDAO implements CrudDAO<User>{
+    private static final HashBrowns hashBrowns = new HashBrowns();
+
     @Override
     public void save(User obj) {
         try(Connection con = ConnectionFactory.getInstance().getConnection()){
@@ -51,7 +55,7 @@ public class UserDAO implements CrudDAO<User>{
             PreparedStatement ps = con.prepareStatement("UPDATE reimbursementsys.ers_users SET username = ?, email = ?, \"password\" = ?, given_name = ?, surname = ?, is_active = ?, role_id = ? WHERE user_id =?");
             ps.setString(1, req.getUsername());
             ps.setString(2, req.getEmail());
-            ps.setString(3, req.getPassword1());
+            ps.setString(3, hashBrowns.encryptString(req.getPassword1()));
             ps.setString(4, req.getGiven_name());
             ps.setString(5, req.getSurname());
             ps.setBoolean(6, req.getIs_active());
@@ -59,7 +63,7 @@ public class UserDAO implements CrudDAO<User>{
             ps.setString(8, userRequestingUpdate.getUser_id());
 
             ps.executeUpdate();
-        }catch (SQLException e){
+        }catch (SQLException | NoSuchAlgorithmException e){
             e.printStackTrace();
         }
     }
@@ -89,7 +93,7 @@ public class UserDAO implements CrudDAO<User>{
                 users.add(currentUser);
             }
 
-            }catch (SQLException e){
+            }catch (SQLException | NoSuchAlgorithmException e){
                 e.printStackTrace();
             }
         return users;
@@ -109,7 +113,7 @@ public class UserDAO implements CrudDAO<User>{
             if(rs.next()) {
                 user = new User(rs.getString("user_id"), rs.getString("username"),rs.getString("email"), rs.getString("password"), rs.getString("given_name"), rs.getString("surname"), rs.getBoolean("is_active"), rs.getString("role_id"));
             }
-        }catch (SQLException e){
+        }catch (SQLException | NoSuchAlgorithmException e){
             e.printStackTrace();
         }
         return user;
@@ -161,7 +165,7 @@ public class UserDAO implements CrudDAO<User>{
             }
 
 
-        }catch (SQLException e){
+        }catch (SQLException | NoSuchAlgorithmException e){
             e.printStackTrace();
         }
         return users;

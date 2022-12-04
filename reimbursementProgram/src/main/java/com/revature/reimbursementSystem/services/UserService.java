@@ -11,6 +11,7 @@ import com.revature.reimbursementSystem.utils.customExceptions.InvalidUserExcept
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     //methods
-    public void saveUser(NewUserRequest req) {
+    public void saveUser(NewUserRequest req) throws NoSuchAlgorithmException {
         List<String> usernames = userDAO.findAllUsernames();
         List<String> emails = userDAO.findAllEmails();
         if (!isValidUsername(req.getUsername()))
