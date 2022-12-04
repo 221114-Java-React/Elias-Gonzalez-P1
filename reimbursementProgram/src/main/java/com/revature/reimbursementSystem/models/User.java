@@ -1,20 +1,24 @@
 package com.revature.reimbursementSystem.models;
 
+import com.revature.reimbursementSystem.utils.HashBrowns;
+
+import java.security.NoSuchAlgorithmException;
+
 public class User {
     //variables
     private String user_id,username, email, password, given_name, surname, role_id;
     private boolean is_active;
-
+    private static final HashBrowns hashBrowns = new HashBrowns();
 
     //constructors
     public User(){
         super();
     }
-    public User(String user_id, String username, String email, String password, String given_name, String surname, boolean is_active, String role_id) {
+    public User(String user_id, String username, String email, String password, String given_name, String surname, boolean is_active, String role_id) throws NoSuchAlgorithmException {
         this.user_id = user_id;
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.password = hashBrowns.encryptString(password);
         this.given_name = given_name;
         this.surname = surname;
         this.is_active = is_active;
@@ -50,8 +54,8 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws NoSuchAlgorithmException {
+        this.password = hashBrowns.encryptString(password);
     }
 
     public String getGiven_name() {

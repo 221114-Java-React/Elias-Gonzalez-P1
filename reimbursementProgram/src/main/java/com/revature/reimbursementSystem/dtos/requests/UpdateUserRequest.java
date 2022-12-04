@@ -1,5 +1,9 @@
 package com.revature.reimbursementSystem.dtos.requests;
 
+import com.revature.reimbursementSystem.utils.HashBrowns;
+
+import java.security.NoSuchAlgorithmException;
+
 public class UpdateUserRequest {
     private String currentUsername;
     private String currentPassword;
@@ -7,22 +11,25 @@ public class UpdateUserRequest {
     private String email;
     private String password1;
     private String password2;
+    private String password3;
     private String given_name;
     private String surname;
     private String role_id;
     private boolean is_active;
 
+    private static final HashBrowns hashBrowns = new HashBrowns();
     public UpdateUserRequest(){
         super();
     }
 
-    public UpdateUserRequest(String currentUsername, String currentPassword, String username, String email, String password1, String password2, String given_name, String surname, String role_id, boolean is_active) {
+    public UpdateUserRequest(String currentUsername, String currentPassword, String username, String email, String password1, String password2, String given_name, String surname, String role_id, boolean is_active) throws NoSuchAlgorithmException {
         this.currentUsername = currentUsername;
-        this.currentPassword = currentPassword;
+        this.currentPassword = hashBrowns.encryptString(currentPassword);
         this.username = username;
         this.email = email;
         this.password1 = password1;
         this.password2 = password2;
+        this.password3 = hashBrowns.encryptString(password1);
         this.given_name = given_name;
         this.surname = surname;
         this.role_id = role_id;
@@ -41,8 +48,8 @@ public class UpdateUserRequest {
         return currentPassword;
     }
 
-    public void setCurrentPassword(String currentPassword) {
-        this.currentPassword = currentPassword;
+    public void setCurrentPassword(String currentPassword) throws NoSuchAlgorithmException {
+        this.currentPassword = hashBrowns.encryptString(currentPassword);
     }
 
     public String getUsername() {

@@ -1,15 +1,19 @@
 package com.revature.reimbursementSystem.dtos.requests;
 
+import com.revature.reimbursementSystem.utils.HashBrowns;
+
+import java.security.NoSuchAlgorithmException;
+
 public class NewLoginRequest {
     private String username, password;
-
+    private static final HashBrowns hashBrowns = new HashBrowns();
     public NewLoginRequest() {
         super();
     }
 
-    public NewLoginRequest(String username, String password) {
+    public NewLoginRequest(String username, String password) throws NoSuchAlgorithmException {
         this.username = username;
-        this.password = password;
+        this.password = hashBrowns.encryptString(password);
     }
 
     public String getUsername() {
@@ -24,8 +28,8 @@ public class NewLoginRequest {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws NoSuchAlgorithmException {
+        this.password = hashBrowns.encryptString(password);
     }
 
     @Override
