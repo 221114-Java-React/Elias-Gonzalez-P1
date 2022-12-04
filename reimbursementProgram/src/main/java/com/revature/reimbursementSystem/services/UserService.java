@@ -55,7 +55,6 @@ public class UserService {
 
 
     public void updateUser(UpdateUserRequest req) {
-        List<String> usernames = userDAO.findAllUsernames();
         List<String> emails = userDAO.findAllEmails();
         User userRequestingUpdate = userDAO.getUserByUsernameAndPassword(req.getCurrentUsername(), req.getCurrentPassword());
         //bad input validation
@@ -63,7 +62,8 @@ public class UserService {
         if (req.getCurrentUsername().equals("") || req.getCurrentPassword().equals("")) throw new InvalidUserException("Please enter a username and password for user update.");
         if (!isValidUsername(req.getUsername())) throw new InvalidUserException("New username needs to be 8-20 characters long");
         //username validation
-        if (usernames.contains(req.getUsername()) && !req.getUsername().equals(req.getCurrentUsername())) throw new InvalidUserException("New username cannot already exist");
+        //TODO fix
+        if (isDuplicateUsername(req)) throw new InvalidUserException("New username cannot already exist");
         //email validation
         if (!isValidEmail(req.getEmail())) throw new InvalidUserException("Invalid email");
         if (emails.contains((req.getEmail())) && !req.getEmail().equals(userRequestingUpdate.getEmail())) throw new InvalidUserException("Email already exists");
@@ -87,18 +87,26 @@ public class UserService {
 
 
     //helper functions
-    private boolean isValidUsername(String username) {
+    public boolean isValidUsername(String username) {
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
     }
 
-    private boolean isValidPassword(String password) {
+    public boolean isValidPassword(String password) {
         return password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
     }
 
-    private boolean isValidEmail(String email) {
+    public boolean isValidEmail(String email) {
         return email.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
     }
 
+    public boolean isDuplicateUsername(UpdateUserRequest req) {
+        List<String> usernames = userDAO.findAllUsernames();
+        return (usernames.contains(req.getUsername()) && !req.getUsername().equals(req.getCurrentUsername()));
+    }
+
+    public boolean isMatchingPasswords(UpdateUserRequest req) {
+        return (!req.getPassword1().equals(req.getPassword2()));
+    }
 
 
 }

@@ -83,6 +83,10 @@ public class UserHandler {
             UpdateUserRequest req = mapper.readValue(ctx.req.getInputStream(), UpdateUserRequest.class);
             logger.info(principal.getUsername()+" attempting to update with "+req.toString());
             ctx.json(req);
+
+            //todo add all validation from service here
+
+
             userService.updateUser(req);
         }catch (InvalidUserException e) {
             ctx.json(e);
