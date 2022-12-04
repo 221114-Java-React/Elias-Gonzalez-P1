@@ -54,7 +54,7 @@ Reimbursements are to be one of the following types:
 ### Non-Functional Requirements
 
 - [x] Basic validation is enforced to ensure that invalid/improper data is not persisted
-- [ ] User passwords will be encrypted by the system before persisting them to the data source
+- [x] User passwords will be encrypted by the system before persisting them to the data source
 - [x] Users are unable to recall reimbursement requests once they have been processed (only pending allowed)
 - [x] Sensitive endpoints are protected from unauthenticated and unauthorized requesters using JWTs
 - [x] Errors and exceptions are handled properly and their details are obfuscated from the user
