@@ -80,7 +80,7 @@ as well as a body request. Please see the documentation below in 'Request Format
 }
 ```
 - Get All Tickets GET /reimbursementSystem/reimbursements
-Place 'authorization' token in header
+  - Place 'authorization' token in header
 - Authenthicaton Request POST /reimbursementSystem/auth
 ```
 {
