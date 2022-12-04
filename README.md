@@ -1,4 +1,4 @@
-# Java Enterprise Foundations Project Requirements
+# Java Employee Reimbursement System
 
 ## Project Description
 **as a note, reimbursements and tickets are used interchangeably in these instructions*
@@ -27,6 +27,14 @@ This is achieved by allowing three types of users to access the system:
 
 ##### Reimbursment System Flow
 ![Reimbursment Status State Flow](https://raw.githubusercontent.com/221114-Java-React/Elias-Gonzalez-P1/main/reimbursementProgram/images/SystemFlow.jpeg)
+
+##### DEFAULT Endpoints
+
+- /reimbursementSystem/users (POST/GET)
+- /reimbursementSystem/users/update (PUT/GET)
+- /reimbursementSystem/reimbursements (POST/GET)
+- /reimbursementSystem/reimbursements/update (PUT/GET)
+- /reimbursementSystem/auth (POST)
 
 ### Technologies
 
