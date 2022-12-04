@@ -77,7 +77,7 @@ as well as a body request. Please see the documentation below in 'Request Format
     "surname":"McTest",
     "password1":"passw0rd",
     "password2":"passw0rd"
-    }
+}
 ```
 - Get All Tickets GET /reimbursementSystem/reimbursements
 Place 'authorization' token in header
