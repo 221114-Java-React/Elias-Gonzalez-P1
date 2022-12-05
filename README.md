@@ -3,7 +3,7 @@
 ## Project Description
 **as a note, reimbursements and tickets are used interchangeably in these instructions*
 
-The ers_reimbursement system is an Application Program Interface (API) that allows companies to manage employee reimbursement requests.
+The ers_reimbursement system is a RESTful Application Program Interface (API) that allows companies to manage employee reimbursement requests. This API also adheres to  Level 2 of the Richardson API Maturity Model because it has Multiple URI and HTTP verbs.
 
 This is achieved by allowing three types of users to access the system:
 - Employee (Role 0): Employees can create tickets, after which they can access and manage their own pending reimbursement requests.
@@ -21,6 +21,7 @@ This is achieved by allowing three types of users to access the system:
 
 ### Project Design Specifications and Documents
 
+The database used meets the 3NF because the data contained is atomic, has unique identifiers, no partial dependencies (no composite keys), and columns are not dependant on anything but primary keys.
 ##### Relational Data Model
 ![Relational Model](https://raw.githubusercontent.com/221114-Java-React/Elias-Gonzalez-P1/main/reimbursementProgram/images/relationalModel.png)
 
